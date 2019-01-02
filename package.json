@@ -11,7 +11,8 @@
   },
   "license": "GPL-3.0",
   "scripts": {
-    "dev": "NODE_ENV=development node ./src/server.js",
+    "dev": "NODE_ENV=development node ./src/server.js --inspect",
+    "devNoInspect": "NODE_ENV=development node ./src/server.js",
     "build": "yarn run build-clean && NODE_ENV=production IS_BUILDING_NEXTJS=1 next build src",
     "build-clean": "rimraf build/app",
     "lint": "eslint .",
@@ -27,7 +28,37 @@
   "eslintConfig": {
     "extends": [
       "@reactioncommerce"
-    ]
+    ],
+    "rules": {
+      "consistent-return": [
+        "off"
+      ],
+      "id-length": [
+        "off"
+      ],
+      "no-plusplus": [
+        "off"
+      ],
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ],
+      "require-jsdoc": [
+        "off"
+      ],
+      "valid-jsdoc": [
+        "warn",
+        {
+          "prefer": {
+            "arg": "param",
+            "argument": "param"
+          }
+        }
+      ],
+      "jsx-a11y/label-has-for": "off"
+    }
   },
   "dependencies": {
     "@material-ui/core": "^3.1.0",

@@ -27,3 +27,24 @@ if (process.browser) {
 defineRoutes(routes);
 
 module.exports = routes;
+
+
+// to replace routes, we need to remove them first (to avoid an error)
+// clunky, sure, but trying to keep edits to Reaction source to a minimum
+routes.replace = function (name, pattern, page) {
+  const routeIndex = this.routes.findIndex((r) => r.name === name);
+
+  if (routeIndex >= 0) {
+    this.routes.splice(routeIndex, 1);
+  }
+
+  return this.add(name, pattern, page);
+};
+
+routes
+  .replace("home", "/", "custom/root")
+  .add("onboarding", "/welcome/:type?/:page?", "custom/onboarding")
+  .add("saleProduct", "/can-release/:slugOrId/:productSlugOrId", "custom/saleProduct")
+  .add("sale", "/can-release/:slugOrId", "custom/saleDetail")
+  .add("sales", "/can-releases", "custom/saleGrid")
+;

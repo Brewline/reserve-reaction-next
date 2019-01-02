@@ -56,6 +56,10 @@ import StripeForm from "@reactioncommerce/components/StripeForm/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import withLocales from "../lib/utils/withLocales";
 
+// custom
+// eslint-disable-next-line import/order
+import * as customComponents from "custom/components";
+
 // Providing locales data
 const AddressFormWithLocales = withLocales(AddressForm);
 
@@ -101,5 +105,7 @@ export default {
   SelectableList,
   StockWarning,
   StripeForm,
-  TextInput
+  TextInput,
+
+  ...customComponents
 };

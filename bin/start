@@ -8,7 +8,15 @@ IFS="$(printf "\n\t")"
 
 cd "$(dirname "$0")/.."
 yarn install
+
+printf "Loading environment…"
+set -a # automatically export all variables
+source .env
+set +a
+
 printf "Creating hydra client…"
-./bin/wait-for.sh "${OAUTH2_HOST}:${OAUTH2_ADMIN_PORT}"
+# ./bin/wait-for.sh "${OAUTH2_HOST}:${OAUTH2_ADMIN_PORT}"
 ./bin/create-hydra-client.js
-yarn dev
+# yarn dev
+yarn devNoInspect
+

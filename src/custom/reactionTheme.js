@@ -166,4 +166,7 @@ const theme = createMuiTheme({
   }
 });
 
+// custom theme edits
+theme.palette.typography;
+
 export default theme;

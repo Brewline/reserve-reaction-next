@@ -1,7 +1,8 @@
-query shopQuery($shopId: ID!) {
+query shopQuery($shopId: ID) {
   shop(id: $shopId) {
     _id
     description
+    # isPrimary
     name
     currency {
       code

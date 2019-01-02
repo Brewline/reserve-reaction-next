@@ -1,0 +1,40 @@
+query salesQuery($first: ConnectionLimitInt, $last: ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor, $sortBy: SaleSortByField, $sortOrder: SortOrder) {
+  sales(first: $first, last: $last, before: $before, after: $after, sortBy: $sortBy, sortOrder: $sortOrder) {
+    totalCount
+    pageInfo {
+      endCursor
+      startCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    edges {
+      cursor
+      node {
+        _id
+        shopId
+        shop {
+          name
+        }
+        headline
+        slug
+        description
+        instructions
+        beginsAt
+        endsAt
+        isDemo
+        isVisible
+        createdAt
+        updatedAt
+        deletedAt
+
+        isBackorder
+        isBestseller
+        isLowQuantity
+        isOnSale
+        isSoldOut
+        hasNotBegun
+        hasEnded
+      }
+    }
+  }
+}

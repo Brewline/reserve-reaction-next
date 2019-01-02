@@ -1,0 +1,36 @@
+query saleQuery($slugOrId: String!) {
+  sale(slugOrId: $slugOrId) {
+    __typename,
+    _id,
+    slug,
+    headline,
+    description,
+    instructions,
+    beginsAt,
+    endsAt,
+    isDemo,
+    isVisible,
+    isBackorder,
+    isBestseller,
+    isLowQuantity,
+    isOnSale,
+    isSoldOut,
+    hasNotBegun,
+    hasEnded,
+    shop {
+      name
+    }
+    products {
+      _id,
+      title,
+      variants {
+        _id,
+        title,
+        options {
+          _id,
+          title
+        }
+      }
+    }
+  }
+}

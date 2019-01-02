@@ -38,6 +38,13 @@ class UIStore {
   @observable sortBy = "updatedAt-desc";
 
   /**
+   * The product grid's sorting order
+   *
+   * @type string
+   */
+  @observable salesSortBy = "beginsAt-asc";
+
+  /**
    * The sort by currency code
    *
    * @type string
