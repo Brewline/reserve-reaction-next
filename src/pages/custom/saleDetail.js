@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import withCart from "containers/cart/withCart";
 import PageLoading from "components/PageLoading";
-import SaleDetail from "custom/components/SaleDetail";
+import { SaleDetail } from "custom/components/SaleDetail";
 import withSale from "custom/containers/sales/withSale";
-import ErrorPage from "./_error";
+import ErrorPage from "../_error";
 
 @withCart
 @withSale
@@ -19,6 +19,7 @@ class SaleDetailPage extends Component {
      * @type function
      */
     addItemsToCart: PropTypes.func,
+    initialGridSize: PropTypes.object,
     isLoadingSale: PropTypes.bool,
     sale: PropTypes.object,
     shop: PropTypes.shape({
@@ -28,6 +29,15 @@ class SaleDetailPage extends Component {
       })
     })
   };
+
+  static async getInitialProps({ req }) {
+    // It is not perfect, but the only way we can guess at the screen width of
+    // the requesting device is to parse the `user-agent` header it sends.
+    const userAgent = req ? req.headers["user-agent"] : navigator.userAgent;
+    const width = (userAgent && userAgent.indexOf("Mobi")) > -1 ? 320 : 1024;
+
+    return { initialGridSize: { width } };
+  }
 
   /**
    *

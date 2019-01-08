@@ -10,7 +10,6 @@ import {
   CustomPropTypes,
   preventAccidentalDoubleClick
 } from "@reactioncommerce/components/utils";
-import priceByCurrencyCode from "lib/utils/priceByCurrencyCode";
 
 const ProductMediaWrapper = styled.div`
   background-color: ${applyTheme("CatalogGridItem.mediaBackgroundColor")};
@@ -36,10 +35,6 @@ const SaleVendor = styled.span`
   ${addTypographyStyles("CatalogGridItemProductVendor", "labelText")}
 `;
 
-const PriceContainer = styled.div`
-  text-align: right;
-`;
-
 class SaleGridItem extends Component {
   static propTypes = {
     /**
@@ -47,10 +42,10 @@ class SaleGridItem extends Component {
      */
     badgeLabels: PropTypes.shape({
       BACKORDER: PropTypes.string,
-      BESTSELLER: PropTypes.string,
+      HAS_ENDED: PropTypes.string,
       LOW_QUANTITY: PropTypes.string,
-      SOLD_OUT: PropTypes.string,
-      SALE: PropTypes.string
+      PRE_SALE: PropTypes.string,
+      SOLD_OUT: PropTypes.string
     }),
     /**
      * You can provide a `className` prop that will be applied to the outermost DOM element
@@ -68,13 +63,8 @@ class SaleGridItem extends Component {
     components: PropTypes.shape({
       BadgeOverlay: CustomPropTypes.component.isRequired,
       Link: CustomPropTypes.component.isRequired,
-      Price: CustomPropTypes.component.isRequired,
       ProgressiveImage: CustomPropTypes.component.isRequired
     }),
-    /**
-     * Currency code to display the price for. Product must include a pricing object with the code in `sale.pricing`
-     */
-    currencyCode: PropTypes.string.isRequired,
     /**
      * Item click handler
      */
@@ -97,12 +87,6 @@ class SaleGridItem extends Component {
           thumbnail: PropTypes.string
         })
       }),
-      pricing: PropTypes.arrayOf(PropTypes.shape({
-        currency: PropTypes.shape({
-          code: PropTypes.string
-        }),
-        displayPrice: PropTypes.string
-      })),
       isSoldOut: PropTypes.bool,
       isBackorder: PropTypes.bool,
       isOnSale: PropTypes.bool,
@@ -118,12 +102,6 @@ class SaleGridItem extends Component {
     onClick() {},
     placeholderImageURL: ""
   };
-
-  constructor(props) {
-    super(props);
-
-    console.log({ props });
-  }
 
   state = {
     fit: "cover"
@@ -173,7 +151,7 @@ class SaleGridItem extends Component {
 
   get saleDetailHref() {
     const { sale: { slug } } = this.props;
-    const url = `/sale/${slug}`; // TODO: use router
+    const url = `/can-release/${slug}`; // TODO: use router
     return url;
   }
 
@@ -214,20 +192,13 @@ class SaleGridItem extends Component {
 
   renderProductInfo() {
     const {
-      components: { Price },
-      currencyCode,
-      sale: { pricing = [], headline, shop: { name: vendor } = {} }
+      sale: { headline, shop: { name: vendor } = {} }
     } = this.props;
-
-    const salePrice = priceByCurrencyCode(currencyCode, pricing) || {};
 
     return (
       <div>
         <SaleInfo>
           <SaleTitle>{headline}</SaleTitle>
-          <PriceContainer>
-            <Price displayPrice={salePrice.displayPrice} />
-          </PriceContainer>
         </SaleInfo>
         <div>
           <SaleVendor>{vendor}</SaleVendor>

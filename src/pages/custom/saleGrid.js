@@ -5,7 +5,7 @@ import Helmet from "react-helmet";
 import { inPageSizes } from "lib/utils/pageSizes";
 import { SaleGridWithControls } from "custom/components/SaleGrid";
 import withSales from "custom/containers/sales/withSales";
-import trackProductListViewed from "custom/lib/tracking/trackSaleListViewed";
+// import trackProductListViewed from "custom/lib/tracking/trackSaleListViewed";
 
 @withSales
 @inject("routingStore", "uiStore")
@@ -38,11 +38,11 @@ class SaleGridPage extends Component {
     return { initialGridSize: { width } };
   }
 
-  @trackProductListViewed()
-  componentDidMount() {
-    const { routingStore } = this.props;
-    routingStore.setTag({});
-  }
+  // @trackProductListViewed()
+  // componentDidMount() {
+  //   const { routingStore } = this.props;
+  //   routingStore.setTag({});
+  // }
 
   componentDidUpdate(prevProps) {
     if (this.props.sales !== prevProps.sales) {
@@ -50,8 +50,8 @@ class SaleGridPage extends Component {
     }
   }
 
-  @trackProductListViewed()
-  trackEvent() {}
+  // @trackProductListViewed()
+  // trackEvent() {}
 
   setPageSize = (pageSize) => {
     this.props.routingStore.setSearch({ limit: pageSize });
