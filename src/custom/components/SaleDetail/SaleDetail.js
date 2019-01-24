@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import CatalogGrid from "@reactioncommerce/components/CatalogGrid/v1";
-import withWidth, { isWidthUp, isWidthDown } from "@material-ui/core/withWidth";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import { inject, observer } from "mobx-react";
+import InlineAlert from "@reactioncommerce/components/InlineAlert/v1";
 import track from "lib/tracking/track";
 // import Breadcrumbs from "components/Breadcrumbs";
 // import SaleDetailAddToCart from "components/SaleDetailAddToCart";
@@ -22,9 +22,10 @@ import { Router } from "routes";
 // import trackSale from "lib/tracking/trackSale";
 import TRACKING from "lib/tracking/constants";
 import trackCartItems from "lib/tracking/trackCartItems";
+import SaleProductGrid from "./SaleProductGrid";
 import SaleProductGridItem from "./SaleProductGridItem";
 
-const { CART_VIEWED, PRODUCT_ADDED, PRODUCT_VIEWED } = TRACKING;
+const { PRODUCT_VIEWED } = TRACKING;
 
 const styles = (theme) => ({
   section: {
@@ -65,7 +66,7 @@ class SaleDetail extends Component {
     addItemsToCart: PropTypes.func,
     classes: PropTypes.object,
     currencyCode: PropTypes.string.isRequired,
-    initialGridSize: PropTypes.object,
+    initialSize: PropTypes.object,
     routingStore: PropTypes.object.isRequired,
     sale: PropTypes.object,
     shop: PropTypes.object.isRequired,
@@ -221,59 +222,63 @@ class SaleDetail extends Component {
   //   return salePrice;
   // }
   renderTiming() {
-    let className;
-    let content;
-    const {
-      classes,
-      sale
-    } = this.props;
+    const { sale } = this.props;
 
     if (sale.hasNotBegun) {
-      className = classes.info;
-      content = (
-        <Fragment>
-          Begins in {moment(sale.beginsAt).fromNow()}
-        </Fragment>
+      return (
+        <InlineAlert
+          alertType="information"
+          message={`Begins ${moment(sale.beginsAt).fromNow()}`}
+          title="This Can Release has not started"
+        />
       );
-    } else if (sale.hasEnded) {
-      className = classes.info;
-      content = (
-        <Fragment>
-          Ended {moment(sale.endsAt).fromNow()}
-        </Fragment>
+    }
+
+    if (sale.hasEnded) {
+      return (
+        <InlineAlert
+          alertType="error"
+          message={`Ended ${moment(sale.endsAt).fromNow()}`}
+          title="This Can Release has ended"
+        />
       );
-    } else if (sale.isLowQuantity) {
-      className = classes.info;
-      content = (
-        <Fragment>
-          This one's going fast!
-        </Fragment>
+    }
+
+    if (sale.isLowQuantity) {
+      return (
+        <InlineAlert
+          alertType="warning"
+          message="Some products have limited availability"
+          title="This Can Release is on fire!"
+        />
       );
-    } else if (sale.isBackorder) {
-      className = classes.info;
-      content = (
-        <Fragment>
-          Join the waitlist if any becomes available.
-        </Fragment>
+    }
+
+    if (sale.isBackorder) {
+      return (
+        <InlineAlert
+          alertType="error"
+          message="Subscribe now to be notified of the next release"
+          title="Backorder"
+        />
       );
-    } else if (sale.isSoldOut) {
-      className = classes.info;
-      content = (
-        <Fragment>
-          Sold Out.
-        </Fragment>
-      );
-    } else {
-      className = classes.info;
-      content = (
-        <Fragment>
-          Sale ends in {moment(sale.endsAt).fromNow()}
-        </Fragment>
+    }
+
+    if (sale.isSoldOut) {
+      return (
+        <InlineAlert
+          alertType="error"
+          message="Subscribe now to be notified of the next release"
+          title="Sold Out"
+        />
       );
     }
 
     return (
-      <div className={className}>{content}</div>
+      <InlineAlert
+        alertType="warning"
+        message={`Sale ends ${moment(sale.endsAt).fromNow()}`}
+      />
     );
   }
 
@@ -295,8 +300,8 @@ class SaleDetail extends Component {
     return (
       <Fragment>
         <Grid container spacing={24}>
-          <CatalogGrid
-            components={{ CatalogGridItem: SaleProductGridItem }}
+          <SaleProductGrid
+            components={{ SaleProductGridItem }}
             initialSize={initialSize}
             onItemClick={this.onItemClick}
             products={products}
@@ -308,16 +313,47 @@ class SaleDetail extends Component {
     );
   }
 
+  renderDemoWarning() {
+    const {
+      sale: {
+        isDemo,
+        slug: saleSlug,
+        shop: { name: shopName, slug: shopSlug } = {}
+      } = {}
+    } = this.props;
+
+    if (!isDemo) { return; }
+
+    const href =
+      `https://www.brewline.io/contact/?utm_source=reserve&utm_medium=shop_sale&utm_campaign=brewer_onboarding&utm_term=${shopSlug}&utm_content=${saleSlug}`;
+    const message = (
+      <span>
+        {`If you represent ${shopName} and would like to run your next can release online, please `}
+        <a href={href} target="_blank">contact us</a>!
+      </span>
+    );
+
+    return (
+      <Grid container spacing={24}>
+        <Grid item xs={12}>
+          <InlineAlert
+            alertType="error"
+            message={message}
+            title="This is a demo can release"
+          />
+        </Grid>
+      </Grid>
+    );
+  }
+
   render() {
     const {
       classes,
-      currencyCode,
       sale,
-      routingStore,
       theme,
-      uiStore: { pdpSelectedOptionId, pdpSelectedVariantId },
       width
     } = this.props;
+    const pageTitle = null; // placeholder
 
     // // Set the default media as the top-level sale's media
     // // (all media on all variants and objects)
@@ -351,8 +387,10 @@ class SaleDetail extends Component {
     if (isWidthDown("sm", width)) {
       return (
         <Fragment>
+          {this.renderDemoWarning()}
+
           <div className={classes.section}>
-            <ProductDetailTitle pageTitle={null} title={sale.headline} />
+            <ProductDetailTitle pageTitle={pageTitle} title={sale.headline} />
 
             <div className={classes.info}>
               <ProductDetailVendor>{sale.shop.name}</ProductDetailVendor>
@@ -370,22 +408,7 @@ class SaleDetail extends Component {
           <div className={classes.section}>
             <MediaGallery mediaItems={pdpMediaItems} />
           </div>
-
-          <div className={classes.section}>
-            <VariantList
-              onSelectOption={this.handleSelectOption}
-              onSelectVariant={this.handleSelectVariant}
-              sale={sale}
-              selectedOptionId={pdpSelectedOptionId}
-              selectedVariantId={pdpSelectedVariantId}
-              currencyCode={currencyCode}
-              variants={sale.variants}
-            />
-            <SaleDetailAddToCart onClick={this.handleAddToCartClick} />
-          </div>
           */}
-
-          <h2>{sale.products.length} Products</h2>
 
           {this.renderProducts()}
 
@@ -396,47 +419,42 @@ class SaleDetail extends Component {
       );
     }
 
-    // return (
-    //   <Fragment>
-    //     <Grid container spacing={theme.spacing.unit * 5}>
-    //       <Grid item className={classes.breadcrumbGrid} xs={12}>
-    //         <Breadcrumbs isPDP tagId={routingStore.tagId} sale={sale} />
-    //       </Grid>
-    //       <Grid item xs={12} sm={6}>
-    //         <div className={classes.section}>
-    //           <MediaGallery mediaItems={pdpMediaItems} />
-    //         </div>
-    //       </Grid>
-
-    //       <Grid item xs={12} sm={6}>
-    //         <ProductDetailTitle pageTitle={sale.pageTitle} title={sale.title} />
-    //         <div className={classes.info}>
-    //           <ProductDetailVendor>{sale.vendor}</ProductDetailVendor>
-    //         </div>
-    //         <div className={classes.info}>
-    //           <SaleDetailPrice className={classes.bottomMargin} compareAtPrice={compareAtDisplayPrice} price={salePrice.displayPrice} />
-    //         </div>
-    //         <div className={classes.info}>
-    //           <ProductDetailDescription>{sale.description}</ProductDetailDescription>
-    //         </div>
-    //         <VariantList
-    //           onSelectOption={this.handleSelectOption}
-    //           onSelectVariant={this.handleSelectVariant}
-    //           sale={sale}
-    //           selectedOptionId={pdpSelectedOptionId}
-    //           selectedVariantId={pdpSelectedVariantId}
-    //           currencyCode={currencyCode}
-    //           variants={sale.variants}
-    //         />
-    //         <SaleDetailAddToCart onClick={this.handleAddToCartClick} />
-    //       </Grid>
-    //     </Grid>
-    //   </Fragment>
-    // );
-
     return (
       <Fragment>
-        <h1>Sale Detail</h1>
+        {this.renderDemoWarning()}
+
+        <Grid container spacing={theme.spacing.unit * 5}>
+          {/* <Grid item className={classes.breadcrumbGrid} xs={12}>
+            <Breadcrumbs isPDP tagId={routingStore.tagId} sale={sale} />
+          </Grid> */}
+          {/* <Grid item xs={12} sm={6}>
+            <div className={classes.section}>
+              <MediaGallery mediaItems={pdpMediaItems} />
+            </div>
+          </Grid> */}
+
+          <Grid item xs={12} sm={6}>
+            <ProductDetailTitle pageTitle={pageTitle} title={sale.headline} />
+
+            <div className={classes.info}>
+              <ProductDetailVendor>{sale.shop.name}</ProductDetailVendor>
+            </div>
+
+            {this.renderTiming()}
+
+            {/* <div className={classes.info}>
+              <SaleDetailPrice className={classes.bottomMargin} compareAtPrice={compareAtDisplayPrice} price={salePrice.displayPrice} />
+            </div> */}
+
+            <div className={classes.info}>
+              <ProductDetailDescription>{sale.description}</ProductDetailDescription>
+            </div>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            {this.renderProducts()}
+          </Grid>
+        </Grid>
       </Fragment>
     );
   }

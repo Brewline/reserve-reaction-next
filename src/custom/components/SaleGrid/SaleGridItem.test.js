@@ -28,9 +28,9 @@ test("SaleGridItem basic snapshot", () => {
         }],
         isSoldOut: false,
         isBackorder: false,
-        isOnSale: false,
         isLowQuantity: false,
-        isBestseller: true
+        hasEnded: false,
+        hasNotBegin: false
       }}
       currencyCode="USD"
     />
@@ -58,9 +58,9 @@ test("SaleGridItem with placeholder image", () => {
         }],
         isSoldOut: false,
         isBackorder: false,
-        isOnSale: false,
         isLowQuantity: false,
-        isBestseller: true
+        hasEnded: false,
+        hasNotBegin: false
       }}
       currencyCode="USD"
     />

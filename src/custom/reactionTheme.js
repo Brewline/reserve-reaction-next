@@ -167,6 +167,18 @@ const theme = createMuiTheme({
 });
 
 // custom theme edits
-theme.palette.typography;
+theme.palette.brewline = {
+  brewlineBlue: "#2a43a7",
+  brewlineGreen: "#78da20",
+  brewlineOrange: "#f57924"
+};
+
+theme.overrides = {
+  MuiButton: { // Name of the component ⚛️ / style sheet
+    root: { // Name of the rule
+      textTransform: "inherit"
+    }
+  }
+};
 
 export default theme;

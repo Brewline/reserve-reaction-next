@@ -30,72 +30,6 @@ const styles = (theme) => ({
     }
   }
 });
-/* eslint-enable quote-props */
-// body.app-brewlineOnboarding,
-// body.app-brewlineOnboardingBrewery,
-// body.app-brewlineOnboardingCustomer {
-//   #reactionAppContainer > .reaction-toolbar,
-//   .rui.toolbar.admin-shortcut-bar,
-//   .reaction-navigation-footer {
-//     display: none;
-//   }
-
-//   // override the default Divider style
-//   .rui.separator.labeled .label {
-//     color: white;
-//   }
-//   .modal .rui.separator.labeled .label {
-//     color: @text-color;
-//   }
-// }
-
-// .onboarding-container {
-//   display: flex;
-//   justify-content: center;
-
-//   color: white;
-
-//   a {
-//     color: inherit;
-//   }
-
-//   .modal {
-//     color: @text-color;
-//   }
-
-//   .panel-search-results__list {
-//     color: @text-color;
-//   }
-
-//   .favorites-bar {
-//     &__header {
-//       background-color: @rui-warning;
-//       color: @text-color;
-//     };
-
-//     &__transition-group {
-//       border-color: @rui-warning;
-//     };
-//   }
-// }
-
-// .max-width-container(@width: 600px) {
-//   max-width: @width;
-//   margin: 0 auto;
-// }
-
-// .onboarding__steps-container {
-//   width: 100%;
-
-//   .alert-container,
-//   .onboarding__step {
-//     .max-width-container;
-//   }
-
-//   .onboarding__step {
-//     padding: 20px;
-//   }
-// }
 
 // @withStyles(styles)
 @withStyles(styles, { withTheme: true }) // temporarily add theme while developing
@@ -116,7 +50,7 @@ export default class Onboarding extends Component {
   }
 
   renderDefault() {
-    return <About />;
+    return <About {...this.props}/>;
   }
 
   renderTemplate() {
@@ -126,11 +60,19 @@ export default class Onboarding extends Component {
     const matchedTemplateName =
       Object.keys(TypedComponents).find((k) => k.toLowerCase() === page);
 
-    if (!matchedTemplateName) { return this.renderDefault(); }
+    if (!matchedTemplateName) {
+      const TypedDefaultComponent = TypedComponents.defaultComponent;
+
+      if (TypedDefaultComponent) {
+        return <TypedDefaultComponent {...this.props} />;
+      }
+
+      return this.renderDefault();
+    }
 
     const TemplateComponent = TypedComponents[matchedTemplateName];
 
-    return <TemplateComponent />;
+    return <TemplateComponent {...this.props} />;
   }
 
   render() {

@@ -134,9 +134,9 @@ test("SaleGrid contain vs fit snapshot", () => {
         }],
         isSoldOut: false,
         isBackorder: false,
-        isOnSale: false,
         isLowQuantity: false,
-        isBestseller: false
+        hasEnded: false,
+        hasNotBegin: false
       },
       {
         title: "Portrait",
@@ -160,9 +160,9 @@ test("SaleGrid contain vs fit snapshot", () => {
         }],
         isSoldOut: false,
         isBackorder: false,
-        isOnSale: false,
         isLowQuantity: false,
-        isBestseller: false
+        hasEnded: false,
+        hasNotBegin: false
       }]}
     />
   ));

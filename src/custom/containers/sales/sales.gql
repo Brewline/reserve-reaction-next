@@ -28,9 +28,7 @@ query salesQuery($first: ConnectionLimitInt, $last: ConnectionLimitInt, $before:
         deletedAt
 
         isBackorder
-        isBestseller
         isLowQuantity
-        isOnSale
         isSoldOut
         hasNotBegun
         hasEnded

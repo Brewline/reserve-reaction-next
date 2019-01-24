@@ -1,0 +1,48 @@
+query shopSalesQuery($shopSlugOrId: String!, $first: ConnectionLimitInt, $last: ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor, $sortBy: SaleSortByField, $sortOrder: SortOrder) {
+  shopSales(shopSlugOrId: $shopSlugOrId, first: $first, last: $last, before: $before, after: $after, sortBy: $sortBy, sortOrder: $sortOrder) {
+    _id
+    brandAssets
+    description
+    # isPrimary
+    name
+    currency {
+      code
+    }
+    sales {
+      totalCount
+      pageInfo {
+        endCursor
+        startCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      edges {
+        cursor
+        node {
+          _id
+          shopId
+          shop {
+            name
+          }
+          headline
+          slug
+          description
+          instructions
+          beginsAt
+          endsAt
+          isDemo
+          isVisible
+          createdAt
+          updatedAt
+          deletedAt
+
+          isBackorder
+          isLowQuantity
+          isSoldOut
+          hasNotBegun
+          hasEnded
+        }
+      }
+    }
+  }
+}

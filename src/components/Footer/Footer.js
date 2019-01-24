@@ -10,14 +10,21 @@ const styles = (theme) => ({
     alignItems: "center",
     display: "flex",
     justifyContent: "center",
-    marginBottom: theme.spacing.unit * 2
+
+    // #brewlinecustom
+    padding: theme.spacing.unit * 2,
+    // copied from header
+    backgroundColor: theme.palette.reaction.white,
+    borderTop: `solid 1px ${theme.palette.reaction.black05}`,
+    color: theme.palette.reaction.coolGrey500
   }
 });
 
 const Footer = ({ ...props }) => (
   <footer className={props.classes.footer}>
     <Typography variant="caption">
-      &copy; {date.getFullYear()} Reaction Commerce
+      {/* #brewlinecustom */}
+      &copy; {date.getFullYear()} Brewline, LLC
     </Typography>
   </footer>
 );

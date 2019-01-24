@@ -1,0 +1,40 @@
+# import "./fragments.gql"
+
+# Create Sale for Untappd Product
+mutation createSaleForUntappdProduct($untappdId: Int!, $saleData: SaleInput, $variantOptionsData: [VariantOptionsInput]!) {
+  createSaleForUntappdProduct(untappdId: $untappdId, saleData: $saleData, variantOptionsData: $variantOptionsData) {
+    __typename,
+    _id,
+    slug,
+    headline,
+    description,
+    instructions,
+    beginsAt,
+    endsAt,
+    isDemo,
+    isVisible,
+    isLowQuantity,
+    isBackorder,
+    isSoldOut,
+    hasNotBegun,
+    hasEnded,
+    shop {
+      _id,
+      currency { code },
+      name,
+      slug
+    }
+    products {
+      _id,
+      title,
+      variants {
+        _id,
+        title,
+        options {
+          _id,
+          title
+        }
+      }
+    }
+  }
+}

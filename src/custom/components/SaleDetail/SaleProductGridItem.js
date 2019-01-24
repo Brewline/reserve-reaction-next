@@ -12,7 +12,9 @@ import {
   preventAccidentalDoubleClick
 } from "@reactioncommerce/components/utils";
 import { priceByCurrencyCode } from "@reactioncommerce/components/CatalogGridItem/v1/utils";
+import Grid from "@material-ui/core/Grid";
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
+import { withStyles } from "@material-ui/core/styles";
 import withCart from "containers/cart/withCart";
 import ProductDetailAddToCart from "components/ProductDetailAddToCart";
 import VariantList from "components/VariantList";
@@ -48,12 +50,19 @@ const ProductVendor = styled.span`
   ${addTypographyStyles("CatalogGridItemProductVendor", "labelText")}
 `;
 
+const ProductDescription = styled.div`
+  ${addTypographyStyles("CatalogGridItemProductDescription", "bodyText")}
+`;
+
 const PriceContainer = styled.div`
   text-align: right;
 `;
 
+const styles = (_theme) => ({});
+
 @withCart
 @withWidth({ initialWidth: "md" })
+@withStyles(styles, { withTheme: true, name: "SkSaleProductGridItem" })
 @inject("routingStore", "uiStore")
 @track()
 @observer
@@ -135,6 +144,9 @@ class SaleProductGridItem extends Component {
       isLowQuantity: PropTypes.bool,
       isBestseller: PropTypes.bool
     }),
+
+    theme: PropTypes.object,
+
     uiStore: PropTypes.object.isRequired
   };
 
@@ -216,6 +228,36 @@ class SaleProductGridItem extends Component {
     return primaryImage;
   }
 
+  get selectedVariantId() {
+    const {
+      product: { variants } = {},
+      uiStore: { pdpSelectedVariantId }
+    } = this.props;
+
+    if (variants.find((v) => v._id === pdpSelectedVariantId)) {
+      return pdpSelectedVariantId;
+    }
+
+    return null;
+  }
+
+  get selectedOptionId() {
+    const {
+      product: { variants } = {},
+      uiStore: { pdpSelectedOptionId }
+    } = this.props;
+
+    const optionWithId = variants.filter((v) => v).some(({ options = [] }) => (
+      options.some((o) => o._id === pdpSelectedOptionId)
+    ));
+
+    if (optionWithId) {
+      return pdpSelectedOptionId;
+    }
+
+    return null;
+  }
+
   @trackProduct()
   trackAction() {}
 
@@ -294,7 +336,6 @@ class SaleProductGridItem extends Component {
     const selectedOption = variantById(selectedVariant.options, pdpSelectedOptionId);
     const selectedVariantOrOption = selectedOption || selectedVariant;
 
-    debugger;
     if (selectedVariantOrOption) {
       // Get the price for the currently selected variant or variant option
       const price = priceByCurrencyCode(currencyCode, selectedVariantOrOption.pricing);
@@ -344,14 +385,14 @@ class SaleProductGridItem extends Component {
   };
 
   renderProductMedia() {
-    const { components: { ProgressiveImage }, product: { description } } = this.props;
+    const { components: { ProgressiveImage }, product: { title } } = this.props;
     const { fit } = this.state;
 
     return (
       <ProductMediaWrapper>
         <ProgressiveImage
           fit={fit}
-          altText={description}
+          altText={title}
           presrc={this.primaryImage.URLs.thumbnail}
           srcs={this.primaryImage.URLs}
         />
@@ -365,7 +406,7 @@ class SaleProductGridItem extends Component {
       currencyCode,
       product
     } = this.props;
-    const { pageTitle, pricing, title } = product;
+    const { description, pageTitle, pricing, title } = product;
     const productPrice = priceByCurrencyCode(currencyCode, pricing) || {};
 
     return (
@@ -376,9 +417,12 @@ class SaleProductGridItem extends Component {
             <Price displayPrice={productPrice.displayPrice} />
           </PriceContainer>
         </ProductInfo>
+
         <div>
           <ProductVendor>{pageTitle}</ProductVendor>
         </div>
+
+        <ProductDescription>{description}</ProductDescription>
       </div>
     );
   }
@@ -386,8 +430,7 @@ class SaleProductGridItem extends Component {
   renderAddToCart() {
     const {
       currencyCode,
-      product,
-      uiStore: { pdpSelectedOptionId, pdpSelectedVariantId }
+      product
     } = this.props;
     const { variants } = product;
 
@@ -397,12 +440,17 @@ class SaleProductGridItem extends Component {
           onSelectOption={this.handleSelectOption}
           onSelectVariant={this.handleSelectVariant}
           product={product}
-          selectedOptionId={pdpSelectedOptionId}
-          selectedVariantId={pdpSelectedVariantId}
+          selectedOptionId={this.selectedOptionId}
+          selectedVariantId={this.selectedVariantId}
           currencyCode={currencyCode}
           variants={variants}
         />
-        <ProductDetailAddToCart onClick={this.handleAddToCartClick} />
+        <ProductDetailAddToCart
+          onClick={this.handleAddToCartClick}
+          selectedOptionId={this.selectedOptionId}
+          selectedVariantId={this.selectedVariantId}
+          variants={variants}
+        />
       </div>
     );
   }
@@ -412,7 +460,8 @@ class SaleProductGridItem extends Component {
       className,
       badgeLabels,
       components: { BadgeOverlay /* , Link */ },
-      product
+      product,
+      theme
     } = this.props;
 
     const badgeProps = { product };
@@ -423,20 +472,27 @@ class SaleProductGridItem extends Component {
 
     return (
       <div className={className}>
-        {/* Sale Product Detail Page is not yet supported
-          <Link
-            href={this.productDetailHref}
-            onClick={this.handleOnClick}
-          >
-        */}
-        <BadgeOverlay {...badgeProps}>
-          {this.renderProductMedia()}
-          {this.renderProductInfo()}
-        </BadgeOverlay>
-        {/*
-          </Link>
-        */}
-        {this.renderAddToCart()}
+        <Grid container spacing={theme.spacing.unit * 5}>
+          <Grid item xs={12} sm={6}>
+            {/* Sale Product Detail Page is not yet supported
+              <Link
+                href={this.productDetailHref}
+                onClick={this.handleOnClick}
+              >
+            */}
+            <BadgeOverlay {...badgeProps}>
+              {this.renderProductMedia()}
+              {this.renderProductInfo()}
+            </BadgeOverlay>
+            {/*
+              </Link>
+            */}
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            {this.renderAddToCart()}
+          </Grid>
+        </Grid>
       </div>
     );
   }

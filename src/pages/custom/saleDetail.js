@@ -9,7 +9,7 @@ import ErrorPage from "../_error";
 
 @withCart
 @withSale
-class SaleDetailPage extends Component {
+export default class SaleDetailPage extends Component {
   static propTypes = {
     /**
      * Function to add items to a cart, usually using the addItemsToCart from
@@ -91,7 +91,7 @@ class SaleDetailPage extends Component {
   }
 
   renderMainArea() {
-    const { addItemsToCart, isLoadingSale, sale, shop } = this.props;
+    const { addItemsToCart, initialGridSize, isLoadingSale, sale, shop } = this.props;
     const currencyCode = (shop && shop.currency.code) || "USD";
 
     if (isLoadingSale) return <PageLoading />;
@@ -102,6 +102,7 @@ class SaleDetailPage extends Component {
       <SaleDetail
         addItemsToCart={addItemsToCart}
         currencyCode={currencyCode}
+        initialSize={initialGridSize}
         sale={sale}
         shop={shop}
       />
@@ -123,5 +124,3 @@ class SaleDetailPage extends Component {
     );
   }
 }
-
-export default SaleDetailPage;

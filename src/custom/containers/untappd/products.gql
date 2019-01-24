@@ -1,0 +1,69 @@
+query productsQuery($q: String!, $limit: Int, $offset: Int) {
+  untappdProducts(q: $q, limit: $limit, offset: $offset) {
+    __typename,
+    beers {
+      count,
+      items {
+        ...BeerSearchResult
+      }
+    },
+    brewery_id,
+    found,
+    limit,
+    offset,
+    message,
+    parsed_term,
+    search_type,
+    search_version,
+    term,
+    time_taken,
+    type_id
+  }
+}
+
+fragment BeerSearchResult on UntappdSearchResultBeer {
+  checkin_count
+  beer {
+    ...Beer
+  }
+  brewery {
+    ...Brewery
+  }
+}
+
+fragment Beer on UntappdBeer {
+  auth_rating
+  bid
+  beer_abv
+  beer_description
+  beer_ibu
+  beer_label
+  beer_name
+  beer_slug
+  beer_style
+  created_at
+  in_production
+}
+
+fragment Brewery on UntappdBrewery {
+  brewery_id
+  brewery_label
+  brewery_name
+  brewery_page_url
+  brewery_slug
+  brewery_type
+  country_name
+  brewery_active
+  contact {
+    twitter
+    facebook
+    instagram
+    url
+  }
+  location {
+    brewery_city
+    brewery_state
+    lat
+    lng
+  }
+}

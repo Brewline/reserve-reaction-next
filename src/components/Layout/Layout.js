@@ -6,7 +6,11 @@ import Footer from "components/Footer";
 
 const styles = (theme) => ({
   root: {
-    minHeight: "100vh"
+    minHeight: "100vh",
+
+    // #brewlinecustom
+    display: "flex",
+    flexDirection: "column"
   },
   main: {
     flex: "1 1 auto",

@@ -1,0 +1,7 @@
+#import "./fragments.gql"
+
+query shopSaleQuery($shopSlugOrId: String!, $saleSlugOrId: String!) {
+  shopSale(shopSlugOrId: $shopSlugOrId, saleSlugOrId: $saleSlugOrId) {
+    ...SaleCommon
+  }
+}

@@ -1,0 +1,172 @@
+fragment SaleCommon on Sale {
+  __typename,
+  _id,
+  slug,
+  headline,
+  description,
+  instructions,
+  beginsAt,
+  endsAt,
+  isDemo,
+  isVisible,
+  isLowQuantity,
+  isBackorder,
+  isSoldOut,
+  hasNotBegun,
+  hasEnded,
+  shop {
+    _id
+    currency { code }
+    name
+    slug
+  }
+  products {
+    ...SaleProduct
+    variants {
+      ...SaleProductVariant
+      options {
+        ...SaleProductOption
+      }
+    }
+  }
+}
+
+fragment SaleProductCommon on CatalogProduct {
+  _id
+  title
+  metafields {
+    description
+    key
+    namespace
+    scope
+    value
+    valueType
+  }
+  primaryImage {
+    URLs {
+      large
+      medium
+      original
+      small
+      thumbnail
+    }
+    toGrid
+    priority
+    productId
+    variantId
+  }
+  media {
+    toGrid
+    priority
+    productId
+    variantId
+    URLs {
+      thumbnail
+      small
+      medium
+      large
+      original
+    }
+  }
+}
+
+# literally the same as above... smh
+fragment SaleProductVariantCommon on CatalogProductVariant {
+  _id
+  title
+  metafields {
+    description
+    key
+    namespace
+    scope
+    value
+    valueType
+  }
+  primaryImage {
+    URLs {
+      large
+      medium
+      original
+      small
+      thumbnail
+    }
+    toGrid
+    priority
+    productId
+    variantId
+  }
+  media {
+    toGrid
+    priority
+    productId
+    variantId
+    URLs {
+      thumbnail
+      small
+      medium
+      large
+      original
+    }
+  }
+}
+
+fragment SaleProduct on CatalogProduct {
+  ...SaleProductCommon
+  productId
+  slug
+  description
+  vendor
+  isLowQuantity
+  isSoldOut
+  isBackorder
+  pageTitle
+  pricing {
+    currency {
+      code
+    }
+    displayPrice
+    minPrice
+    maxPrice
+  }
+  shop {
+    currency {
+      code
+    }
+  }
+}
+
+fragment SaleProductVariant on CatalogProductVariant {
+  ...SaleProductVariantCommon
+  variantId
+  optionTitle
+  index
+  pricing {
+    compareAtPrice {
+      displayAmount
+    }
+    price
+    currency {
+      code
+    }
+    displayPrice
+  }
+}
+
+fragment SaleProductOption on CatalogProductVariant {
+  ...SaleProductVariantCommon
+  variantId
+  index
+  pricing {
+    compareAtPrice {
+      displayAmount
+    }
+    price
+    currency {
+      code
+    }
+    displayPrice
+  }
+  optionTitle
+  isSoldOut
+  isLowQuantity
+}

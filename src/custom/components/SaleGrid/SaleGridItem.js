@@ -89,9 +89,7 @@ class SaleGridItem extends Component {
       }),
       isSoldOut: PropTypes.bool,
       isBackorder: PropTypes.bool,
-      isOnSale: PropTypes.bool,
       isLowQuantity: PropTypes.bool,
-      isBestseller: PropTypes.bool,
       hasEnded: PropTypes.bool,
       hasNotBegin: PropTypes.bool
     })

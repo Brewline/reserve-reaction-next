@@ -17,10 +17,20 @@ export default function withSale(Component) {
     };
 
     render() {
+      const variables = {};
       const { router: { query } } = this.props;
 
+      if (("shopSlugOrId" in query) && ("saleSlugOrId" in query)) {
+        // shopSaleDetail-style
+        variables.shopSlugOrId = query.shopSlugOrId;
+        variables.saleSlugOrId = query.saleSlugOrId;
+      } else {
+        // standard-style
+        variables.slugOrId = query.slugOrId;
+      }
+
       return (
-        <Query query={saleQuery} variables={{ slugOrId: query.slugOrId }}>
+        <Query query={saleQuery} variables={variables}>
           {({ data, loading }) => {
             const { sale } = data || {};
 
