@@ -21,6 +21,10 @@ export function styles(theme) {
       textDecoration: "underline"
     },
 
+    "ctaButtonWrapper": {
+      width: "100%"
+    },
+
     "featuresSection": {
       "backgroundColor": theme.palette.reaction.black80,
 
@@ -158,13 +162,14 @@ export function styles(theme) {
 
     "@global": {
       "body": {
-        background: theme.palette.brewline.brewlineBlue,
+        color: theme.palette.background.default, // theme.palette.text.inverted
+        backgroundColor: `${theme.palette.brewline.brewlineBlue} !important`,
         [theme.breakpoints.up("md")]: {
           backgroundAttachment: "fixed",
           backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
-          background: "url('/static/images/canning-line.jpg')"
+          backgroundImage: "url('/static/images/canning-line.jpg')"
         }
       },
 

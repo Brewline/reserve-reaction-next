@@ -86,7 +86,7 @@ export default class MarketplaceHome extends Component {
 
         <Grid container spacing={8}>
           <Grid item sm={12} md={3} />
-          <Grid item sm={12} md={6}>
+          <Grid item sm={12} md={6} className={classes.ctaButtonWrapper}>
             <Button
               color="primary"
               route="sales"

@@ -12,17 +12,19 @@ const Components = {
   [typeCustomer]: CustomerComponents
 };
 
-const backgroundImage = "https://brewline.s3.amazonaws.com/uploads/2018/03/brewline-bg-pattern-1.png";
-const backgroundColor1 = "rgba(46,73,182,1)";
-const backgroundColor2 = "rgba(42,67,167,1)";
-/* eslint-disable quote-props */
 const styles = (theme) => ({
   "@global": {
     body: {
-      backgroundPosition: "center top",
-      backgroundRepeat: "repeat",
-      background: `url('${backgroundImage}'), radial-gradient(${backgroundColor1}, ${backgroundColor2})`,
-      color: theme.palette.background.default, // theme.palette.text.inverted
+      "color": theme.palette.background.default, // theme.palette.text.inverted
+      "background": theme.palette.brewline.brewlineBlue,
+      [theme.breakpoints.up("md")]: {
+        backgroundAttachment: "fixed",
+        backgroundPosition: "center center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundImage: "url('/static/images/canning-line.jpg')",
+        backgroundColor: theme.palette.brewline.brewlineBlue
+      },
 
       "& h1, & p": {
         color: theme.palette.background.default
