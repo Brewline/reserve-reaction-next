@@ -140,13 +140,14 @@ class CartPage extends Component {
     const { cart, classes } = this.props;
 
     if (cart && cart.checkout && cart.checkout.summary && Array.isArray(cart.items) && cart.items.length) {
-      const { fulfillmentTotal, itemTotal, taxTotal, total } = cart.checkout.summary;
+      const { fulfillmentTotal, itemTotal, surchargeTotal, taxTotal, total } = cart.checkout.summary;
 
       return (
         <Grid item xs={12} md={3}>
           <CartSummary
             displayShipping={fulfillmentTotal && fulfillmentTotal.displayAmount}
             displaySubtotal={itemTotal && itemTotal.displayAmount}
+            displaySurcharge={surchargeTotal && surchargeTotal.displayAmount}
             displayTax={taxTotal && taxTotal.displayAmount}
             displayTotal={total && total.displayAmount}
             itemsQuantity={cart.totalItemQuantity}
@@ -163,8 +164,9 @@ class CartPage extends Component {
 
   render() {
     const { cart, classes, shop } = this.props;
-
-    if (!cart) return <PageLoading delay={0} />;
+    // when a user has no item in cart in a new session, this.props.cart is null
+    // when the app is still loading, this.props.cart is undefined
+    if (typeof cart === "undefined") return <PageLoading delay={0} />;
 
     return (
       <Fragment>
@@ -173,7 +175,7 @@ class CartPage extends Component {
           meta={[{ name: "description", content: shop && shop.description }]}
         />
         <section>
-          <Typography className={classes.title} variant="title" align="center">
+          <Typography className={classes.title} variant="h6" align="center">
             Shopping Cart
           </Typography>
           <Grid container spacing={24}>
