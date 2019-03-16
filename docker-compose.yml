@@ -29,8 +29,7 @@ services:
     volumes:
       - $HOME/.cache/yarn-offline-mirror:/home/node/.cache/yarn-offline-mirror
       - web-yarn:/home/node/.cache/yarn
-      # - .:/usr/local/src/reaction-app
-      - reaction-sync:/usr/local/src/reaction-app:nocopy
+      - .:/usr/local/src/reaction-app
       - empty_node_modules:/usr/local/src/reaction-app/node_modules # do not link node_modules in, and persist it between dc up runs
       - node_modules:/usr/local/src/node_modules
 
@@ -38,5 +37,3 @@ volumes:
   web-yarn:
   empty_node_modules:
   node_modules:
-  reaction-sync:
-    external: true

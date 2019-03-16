@@ -1,6 +1,7 @@
 // import React, { Component, Fragment } from "react";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { inject } from "mobx-react";
 // import { Router } from "routes";
 // import Helmet from "react-helmet";
 // import { withStyles } from "@material-ui/core/styles";
@@ -17,6 +18,7 @@ import MerchantHome from "custom/home/MerchantHome";
 
 // @withCart
 @withShop
+@inject("primaryShopId")
 // @withStyles(styles, { withTheme: true })
 // @withViewer
 export default class Root extends Component {

@@ -64,7 +64,7 @@ export default class MarketplaceHome extends Component {
 
     return (
       <article className={classes.hero}>
-        <Typography className={classes.heroTitle} gutterBottom={true} variant="display2">
+        <Typography className={classes.heroTitle} component="h2" gutterBottom={true} variant="display2">
           Super charge your next Can Release
         </Typography>
 
