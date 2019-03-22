@@ -4,21 +4,6 @@
  * @returns {undefined}
  */
 function defineRoutes(routes) {
-  routes
-    // .add("home", "/", "productGrid") // #brewlinecustom
-    .add("cart", "/cart", "cart")
-    .add("checkout", "/cart/checkout", "checkout")
-    .add("checkoutLogin", "/cart/login", "checkout")
-    .add("checkoutComplete", "/checkout/order/:orderId", "checkoutComplete")
-    .add("login", "/login", "login")
-    .add("shopProduct", "/shop/:shopSlug/product/:slugOrId", "product")
-    .add("product", "/product/:slugOrId/:variantId?", "product")
-    .add("shop", "/shop/:shopId/:tag", "productGrid")
-    .add("tag", "/tag/:slug", "tag")
-    .add("profileAddressBook", "/profile/address", "profile")
-    .add("profileOrders", "/profile/orders", "profile")
-    .add("profilePaymentMethods", "/profile/payments", "profile");
-
   // #brewlinecustom
   routes
     .add("home", "/", "custom/home")
@@ -32,6 +17,20 @@ function defineRoutes(routes) {
     .add("shopSales", "/:shopSlugOrId/can-releases", "custom/shopSales")
     .add("shopSaleDetail", "/:shopSlugOrId/:saleSlugOrId", "custom/shopSaleDetail")
   ;
+
+  routes
+    // .add("home", "/", "productGrid") // #brewlinecustom
+    .add("cart", "/cart", "cart")
+    .add("checkout", "/cart/checkout", "checkout")
+    .add("checkoutLogin", "/cart/login", "checkout")
+    .add("checkoutComplete", "/checkout/order/:orderId", "checkoutComplete")
+    .add("login", "/login", "login")
+    .add("shopProduct", "/shop/:shopSlug/product/:slugOrId", "product")
+    .add("product", "/product/:slugOrId/:variantId?", "product")
+    .add("shop", "/shop/:shopId/:tag", "productGrid")
+    .add("tag", "/tag/:slug", "tag")
+    .add("profileAddressBook", "/profile/address", "profileAddressBook")
+    .add("profileOrders", "/profile/orders", "profileOrders");
 }
 
 module.exports = defineRoutes;
