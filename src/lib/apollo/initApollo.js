@@ -82,10 +82,11 @@ const create = (initialState, options) => {
   const xBrewlineAlternateIdHeaderName = "X-Brewline-Alternate-Id";
   const xBrewlineAlternateIdHeader = {};
   if (process.browser) {
-    const alternateId = localStorage.getItem(xBrewlineAlternateIdHeaderName);
+    let alternateId = localStorage.getItem(xBrewlineAlternateIdHeaderName);
 
     if (!alternateId) {
-      localStorage.setItem(xBrewlineAlternateIdHeaderName, uuidv1());
+      alternateId = uuidv1();
+      localStorage.setItem(xBrewlineAlternateIdHeaderName, alternateId);
     }
 
     xBrewlineAlternateIdHeader[xBrewlineAlternateIdHeaderName] = alternateId;
