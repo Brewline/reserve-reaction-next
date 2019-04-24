@@ -1,0 +1,38 @@
+query watchlistUserItems(
+  $name: String!,
+  $after: ConnectionCursor,
+  $before: ConnectionCursor,
+  $first: ConnectionLimitInt,
+  $last: ConnectionLimitInt,
+  $sortOrder: SortOrder,
+  $sortBy: WatchlistItemSortByField
+) {
+  watchlistUserItems(
+    name: $name,
+    after: $after,
+    before: $before,
+    first: $first,
+    last: $last,
+    sortOrder: $sortOrder,
+    sortBy: $sortBy
+  ) {
+    totalCount
+    nodes {
+      ...WatchlistUserItem
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}
+
+fragment WatchlistUserItem on WatchlistItem {
+  itemId
+  itemMetadata
+  displayName
+  label
+  createdAt
+}

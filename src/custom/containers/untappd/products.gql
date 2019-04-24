@@ -1,3 +1,6 @@
+#import "./fragments/Beer.gql"
+#import "./fragments/Brewery.gql"
+
 query productsQuery($q: String!, $limit: Int, $offset: Int) {
   untappdProducts(q: $q, limit: $limit, offset: $offset) {
     __typename,
@@ -28,42 +31,5 @@ fragment BeerSearchResult on UntappdSearchResultBeer {
   }
   brewery {
     ...Brewery
-  }
-}
-
-fragment Beer on UntappdBeer {
-  auth_rating
-  bid
-  beer_abv
-  beer_description
-  beer_ibu
-  beer_label
-  beer_name
-  beer_slug
-  beer_style
-  created_at
-  in_production
-}
-
-fragment Brewery on UntappdBrewery {
-  brewery_id
-  brewery_label
-  brewery_name
-  brewery_page_url
-  brewery_slug
-  brewery_type
-  country_name
-  brewery_active
-  contact {
-    twitter
-    facebook
-    instagram
-    url
-  }
-  location {
-    brewery_city
-    brewery_state
-    lat
-    lng
   }
 }

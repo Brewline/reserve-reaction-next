@@ -148,7 +148,7 @@ export default class Login extends Component {
 
     return (
       <div className="onboarding__step brewline-onboarding__login">
-        <Typography variant="title" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           Create an account on Brewline
         </Typography>
 

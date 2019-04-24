@@ -1,0 +1,6 @@
+mutation removeWatchlistItem($watchlist: String!, $itemId: String!, $clientMutationId: String) {
+  removeWatchlistItem(watchlist: $watchlist, itemId: $itemId, clientMutationId: $clientMutationId) {
+    wasRemoved
+    clientMutationId
+  }
+}

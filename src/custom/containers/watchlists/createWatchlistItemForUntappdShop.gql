@@ -1,0 +1,12 @@
+mutation createWatchlistItemForUntappdShop($watchlist: String!, $untappdId: String!, $clientMutationId: String) {
+  createWatchlistItemForUntappdShop(watchlist: $watchlist, untappdId: $untappdId, clientMutationId: $clientMutationId) {
+    item {
+      itemId
+      itemMetadata
+      displayName
+      label
+      createdAt
+    }
+    clientMutationId
+  }
+}

@@ -114,7 +114,7 @@ export default class About extends Component {
   renderBrewerCta() {
     return (
       <Fragment>
-        <Typography variant="title" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           Craft Brewers
         </Typography>
 
@@ -141,7 +141,7 @@ export default class About extends Component {
   renderCustomerCta() {
     return (
       <Fragment>
-        <Typography variant="title" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           Craft Beer Lovers
         </Typography>
 

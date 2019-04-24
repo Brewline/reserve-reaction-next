@@ -1,0 +1,12 @@
+mutation createWatchlistItem($watchlist: String!, $itemId: String!, $watchlistItemData: WatchlistItemInput, $clientMutationId: String) {
+  createWatchlistItem(watchlist: $watchlist, itemId: $itemId, watchlistItemData: $watchlistItemData, clientMutationId: $clientMutationId) {
+    item {
+      itemId
+      itemMetadata
+      displayName
+      label
+      createdAt
+    }
+    clientMutationId
+  }
+}

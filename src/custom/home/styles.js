@@ -57,7 +57,8 @@ export function styles(theme) {
     },
 
     "featureCard": {
-      margin: `0 ${theme.spacing.unit}px ${theme.spacing.unit * 4}px`
+      margin: `0 ${theme.spacing.unit}px ${theme.spacing.unit * 4}px`,
+      width: "100%"
     },
 
     "featureGridItem": {

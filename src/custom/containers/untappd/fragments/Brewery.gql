@@ -1,0 +1,22 @@
+fragment Brewery on UntappdBrewery {
+  brewery_id
+  brewery_label
+  brewery_name
+  brewery_page_url
+  brewery_slug
+  brewery_type
+  country_name
+  brewery_active
+  contact {
+    twitter
+    facebook
+    instagram
+    url
+  }
+  location {
+    brewery_city
+    brewery_state
+    lat
+    lng
+  }
+}

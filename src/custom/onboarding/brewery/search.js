@@ -167,7 +167,7 @@ export default class Search extends Component {
 
     return (
       <div className="admin-controls-content onboarding__step brewline-onboarding__search">
-        <Typography variant="title" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           Search for your Brewery
         </Typography>
 

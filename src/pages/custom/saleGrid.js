@@ -16,6 +16,7 @@ class SaleGridPage extends Component {
     isLoadingSales: PropTypes.bool,
     routingStore: PropTypes.object,
     sales: PropTypes.array,
+    salesPageInfo: PropTypes.object,
     shop: PropTypes.shape({
       currency: PropTypes.shape({
         code: PropTypes.string.isRequired

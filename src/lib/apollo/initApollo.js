@@ -1,3 +1,4 @@
+import uuidv1 from "uuid/v1";
 import { ApolloClient } from "apollo-client";
 import { ApolloLink } from "apollo-link";
 import { Router } from "routes";
@@ -77,12 +78,27 @@ const create = (initialState, options) => {
     authorizationHeader = { Authorization: options.accessToken };
   }
 
+  // #brewlinecustom
+  const xBrewlineAlternateIdHeaderName = "X-Brewline-Alternate-Id";
+  const xBrewlineAlternateIdHeader = {};
+  if (process.browser) {
+    const alternateId = localStorage.getItem(xBrewlineAlternateIdHeaderName);
+
+    if (!alternateId) {
+      localStorage.setItem(xBrewlineAlternateIdHeaderName, uuidv1());
+    }
+
+    xBrewlineAlternateIdHeader[xBrewlineAlternateIdHeaderName] = alternateId;
+  }
+
   // Set auth context
   // https://github.com/apollographql/apollo-link/tree/master/packages/apollo-link-context
   const authLink = setContext((__, { headers }) => ({
     headers: {
       ...headers,
-      ...authorizationHeader
+      ...authorizationHeader,
+      // #brewlinecustom
+      ...xBrewlineAlternateIdHeader
     }
   }));
 

@@ -14,7 +14,7 @@ import Select from "@material-ui/core/Select";
 import Slide from "@material-ui/core/Slide";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import Untappd from "mdi-material-ui/Untappd";
+import IconUntappd from "mdi-material-ui/Untappd";
 
 import { Router } from "routes";
 
@@ -106,12 +106,12 @@ export default class CanReleaseBuilder extends Component {
 
   inputRefs = {};
 
-  handleThrorrledBeerSearch = debounce(this.props.onBeerSearch, 500);
+  handleThrottledBeerSearch = debounce(this.props.onBeerSearch, 500);
 
   handleBeerSearch = (event) => {
     const { currentTarget: { value } } = event;
 
-    return this.handleThrorrledBeerSearch(value);
+    return this.handleThrottledBeerSearch(value);
   }
 
   handleKeyDown = (event) => {
@@ -178,7 +178,7 @@ export default class CanReleaseBuilder extends Component {
     const helperText = (
       <Fragment>
         Search powered by Untappd
-        <Untappd fontSize="inherit" style={{ verticalAlign: "bottom" }} />
+        <IconUntappd fontSize="inherit" style={{ verticalAlign: "bottom" }} />
         {isSearchingBeer && <em>{" Loading..."}</em>}
       </Fragment>
     );
@@ -383,7 +383,7 @@ export default class CanReleaseBuilder extends Component {
               className={classes.heroCta}
               component="h1"
               gutterBottom={true}
-              variant="title"
+              variant="h6"
             >
               Ready to see your next beer release on Brewline?
             </Typography>

@@ -64,7 +64,7 @@ export default class MarketplaceHome extends Component {
 
     return (
       <article className={classes.hero}>
-        <Typography className={classes.heroTitle} component="h2" gutterBottom={true} variant="display2">
+        <Typography className={classes.heroTitle} component="h2" gutterBottom={true} variant="h3">
           Super charge your next Can Release
         </Typography>
 
@@ -80,7 +80,7 @@ export default class MarketplaceHome extends Component {
           </Grid>
         </Grid>
 
-        <Typography className={classes.heroCta} component="h2" gutterBottom={true} variant="title">
+        <Typography className={classes.heroCta} component="h2" gutterBottom={true} variant="h6">
           Ready to see your next beer release on Brewline?
         </Typography>
 
@@ -113,7 +113,7 @@ export default class MarketplaceHome extends Component {
     return (
       <article className={classes.secondaryCtaSection}>
         <div className={classes.secondaryCtaContent}>
-          <Typography variant="title">
+          <Typography variant="h6">
             Not a Craft Brewer?
           </Typography>
 
@@ -137,27 +137,27 @@ export default class MarketplaceHome extends Component {
     return (
       <article className={classes.featuresSection}>
         <div className={classes.featuresContent}>
-          <Typography className={classes.featuresTitle} component="h2" variant="title">
+          <Typography className={classes.featuresTitle} component="h2" variant="h6">
             All the features you need
           </Typography>
 
-          <Grid container>
+          <Grid container spacing={8}>
             {FEATURES.map((feature, index) => (
               <Grid
                 item
                 sm={12}
-                md={4}
+                md={6}
+                lg={4}
                 key={index}
                 className={classes.featureGridItem}
-                spacing={8}
               >
-                <Card className={classes.featureCard}>
+                <Card className={classes.featureCard} square={true} raised={true}>
                   <CardContent className={classes.feature}>
                     <div className={classes.featureIcon}>
                       {feature.icon}
                     </div>
 
-                    <Typography component="h4" variant="subheading" gutterBottom>
+                    <Typography component="h4" variant="subtitle1" gutterBottom>
                       {feature.title}
                     </Typography>
 

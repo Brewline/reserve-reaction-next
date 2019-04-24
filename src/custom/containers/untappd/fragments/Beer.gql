@@ -1,0 +1,13 @@
+fragment Beer on UntappdBeer {
+  auth_rating
+  bid
+  beer_abv
+  beer_description
+  beer_ibu
+  beer_label
+  beer_name
+  beer_slug
+  beer_style
+  created_at
+  in_production
+}

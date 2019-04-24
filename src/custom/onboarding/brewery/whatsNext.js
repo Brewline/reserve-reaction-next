@@ -28,7 +28,7 @@ export default class WhatsNext extends Component {
   render() {
     return (
       <div className="onboarding__step brewline-onboarding__whats-next">
-        <Typography variant="title" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           You&rsquo;re Almost Done!
         </Typography>
 

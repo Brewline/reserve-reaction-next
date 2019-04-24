@@ -1,0 +1,33 @@
+query watchlistSummary(
+  $name: String!,
+  $after: GroupedDataConnectionCursor,
+  $before: GroupedDataConnectionCursor,
+  $first: ConnectionLimitInt,
+  $last: ConnectionLimitInt,
+  $sortOrder: SortOrder,
+  $sortBy: WatchlistItemSummarySortByField
+) {
+  watchlist(name: $name) {
+    _id
+    name
+    summary(after: $after, before: $before, first: $first, last: $last, sortOrder: $sortOrder, sortBy: $sortBy) {
+      totalCount
+      nodes {
+        ...WatchlistItemSummary
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+}
+
+fragment WatchlistItemSummary on WatchlistItemSummary {
+  itemId
+  displayName
+  label
+  count
+}

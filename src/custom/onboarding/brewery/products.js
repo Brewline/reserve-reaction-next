@@ -62,7 +62,7 @@ export default class Products extends Component {
     } else {
       content = (
         <div>
-          <Typography variant="title" gutterBottom>
+          <Typography variant="h6" gutterBottom>
             Set up your Beer Release
           </Typography>
 

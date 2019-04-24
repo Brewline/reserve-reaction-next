@@ -1,0 +1,26 @@
+#import "./fragments/Brewery.gql"
+
+query shopsQuery($q: String!, $limit: Int, $offset: Int) {
+  untappdShops(q: $q, limit: $limit, offset: $offset) {
+    __typename,
+    brewery {
+      count,
+      items {
+        ...BrewerySearchResult
+      }
+    }
+    engine
+    page
+    search_type
+    sort
+    term
+    key
+    found
+  }
+}
+
+fragment BrewerySearchResult on UntappdSearchResultBrewery {
+  brewery {
+    ...Brewery
+  }
+}
