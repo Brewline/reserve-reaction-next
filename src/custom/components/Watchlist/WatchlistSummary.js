@@ -231,6 +231,7 @@ export default class WatchlistSummary extends Component {
       classes,
       watchlist: { name, summary = {} } = {},
       hasMoreSummaryResults,
+      isLoading,
       loadMoreSummaryResults
     } = this.props;
     const { totalCount = 0, nodes = [] } = summary;
@@ -245,10 +246,10 @@ export default class WatchlistSummary extends Component {
 
     const buttons = (
       <Grid container spacing={24} justify="flex-end">
-        <Grid item justify="flex-end">
+        <Grid item>
           <Button
             aria-label="Load More"
-            disabled={!hasMoreSummaryResults}
+            disabled={!hasMoreSummaryResults || isLoading}
             onClick={() => loadMoreSummaryResults()}
             variant="outlined"
             size="small"

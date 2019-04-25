@@ -58,7 +58,7 @@ export default function withWatchlistSummary(UnderlyingComponent) {
 
   class WatchlistSummary extends React.Component {
     static propTypes = {
-      resultsPageSize: PropTypes.int,
+      resultsPageSize: PropTypes.number,
       watchlistName: PropTypes.string.isRequired
     };
 
