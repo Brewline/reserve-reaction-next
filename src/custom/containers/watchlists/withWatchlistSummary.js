@@ -88,7 +88,7 @@ export default function withWatchlistSummary(UnderlyingComponent) {
               isLoading: loading
             };
 
-            const { pageInfo } = watchlistResult.summary;
+            const { pageInfo, nodes = [] } = watchlistResult.summary;
             if (pageInfo) {
               const { hasNextPage } = pageInfo;
               props.hasMoreSummaryResults = hasNextPage;
@@ -101,7 +101,12 @@ export default function withWatchlistSummary(UnderlyingComponent) {
                 }, callback);
               };
             }
-            props.onMutationComplete = refetch;
+
+            let nextFirst = resultsPageSize;
+            if (nodes.length) {
+              nextFirst = nodes.length;
+            }
+            props.onMutationComplete = () => refetch({ first: nextFirst });
 
             return <Component {...props} />;
           }}
