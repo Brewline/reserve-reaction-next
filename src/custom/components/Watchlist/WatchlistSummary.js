@@ -72,15 +72,15 @@ export default class WatchlistSummary extends Component {
       /* eslint-enable camelcase */
     })),
     classes: PropTypes.object,
-    hasMoreResults: PropTypes.bool,
+    hasMoreSummaryResults: PropTypes.bool,
+    hasMoreUserItemsResults: PropTypes.bool,
     isLoading: PropTypes.bool,
     isSearchingBrewery: PropTypes.bool,
-    loadMoreResults: PropTypes.func,
+    loadMoreSummaryResults: PropTypes.func,
     onBrewerySearch: PropTypes.func,
     onCreateWatchlistItem: PropTypes.func.isRequired,
     onCreateWatchlistItemForUntappdShop: PropTypes.func.isRequired,
     onRemoveWatchlistItem: PropTypes.func.isRequired,
-    refetchResults: PropTypes.func,
     watchlist: PropTypes.shape({
       _id: PropTypes.string,
       name: PropTypes.string,
@@ -101,6 +101,16 @@ export default class WatchlistSummary extends Component {
   };
 
   state = {}
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  _isMounted = false;
   inputRefs = {}
 
   handleThrottledBrewerySearch = debounce(this.props.onBrewerySearch, 500);
@@ -175,7 +185,7 @@ export default class WatchlistSummary extends Component {
     );
   }
 
-  renderSummaryItemListItem = (item) => {
+  renderSummaryItemListItem = (item, position) => {
     const { classes } = this.props;
 
     const { itemId, displayName, label, count } = item;
@@ -193,6 +203,8 @@ export default class WatchlistSummary extends Component {
       clickHandler = this.handleCreate;
     }
 
+    const itemText = `${position}) ${displayName}`;
+
     return (
       <ListItem
         key={itemId}
@@ -203,7 +215,7 @@ export default class WatchlistSummary extends Component {
         <ListItemAvatar>
           <Avatar alt={displayName} src={label} />
         </ListItemAvatar>
-        <ListItemText primary={displayName} />
+        <ListItemText primary={itemText} />
         <ListItemSecondaryAction className={classes.starCountAlignment}>
           <IconClass className={iconClassName} />
           <Typography component="span" className={classes.watchCount}>
@@ -217,18 +229,43 @@ export default class WatchlistSummary extends Component {
   renderSummary() {
     const {
       classes,
-      watchlist: { name, summary = {} } = {}
+      watchlist: { name, summary = {} } = {},
+      hasMoreSummaryResults,
+      loadMoreSummaryResults
     } = this.props;
-    const { totalCount = 0, nodes } = summary;
+    const { totalCount = 0, nodes = [] } = summary;
+    const rangeBegin = 1;
+    const rangeEnd = nodes.length + rangeBegin - 1;
 
     const subheader = (
-      <ListSubheader>Top {name} ({totalCount})</ListSubheader>
+      <ListSubheader>
+        Top {name} ({rangeBegin}&mdash;{rangeEnd} of {totalCount})
+      </ListSubheader>
+    );
+
+    const buttons = (
+      <Grid container spacing={24} justify="flex-end">
+        <Grid item justify="flex-end">
+          <Button
+            aria-label="Load More"
+            disabled={!hasMoreSummaryResults}
+            onClick={() => loadMoreSummaryResults()}
+            variant="outlined"
+            size="small"
+          >
+            Load More
+          </Button>
+        </Grid>
+      </Grid>
     );
 
     return (
-      <List subheader={subheader} dense className={classes.summaryList}>
-        {nodes.map(this.renderSummaryItemListItem)}
-      </List>
+      <Fragment>
+        <List subheader={subheader} dense className={classes.summaryList}>
+          {nodes.map((n, i) => this.renderSummaryItemListItem(n, rangeBegin + i))}
+        </List>
+        {buttons}
+      </Fragment>
     );
   }
 
@@ -282,7 +319,7 @@ export default class WatchlistSummary extends Component {
     const { displaySearchForm } = this.state;
     return (
       <Fragment>
-        <Slide direction="down" in={!displaySearchForm} mountOnEnter unmountOnExit>
+        <Slide direction="down" enter={this._isMounted} in={!displaySearchForm} unmountOnExit>
           <Fragment>
             {this.renderSummary()}
 
@@ -290,7 +327,7 @@ export default class WatchlistSummary extends Component {
           </Fragment>
         </Slide>
 
-        <Slide direction="up" in={displaySearchForm} mountOnEnter unmountOnExit>
+        <Slide direction="up" in={displaySearchForm} unmountOnExit>
           {this.renderSearchForm()}
         </Slide>
       </Fragment>

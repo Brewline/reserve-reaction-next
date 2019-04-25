@@ -7,6 +7,7 @@ import { ServerStyleSheet } from "styled-components";
 import getConfig from "next/config";
 import analyticsProviders from "../custom/analytics";
 import favicons from "../custom/favicons";
+import { customMeta } from "../custom/customMeta";
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -71,7 +72,8 @@ class HTMLDocument extends Document {
       {
         name: "viewport",
         content: "user-scalable=0, initial-scale=1 minimum-scale=1, width=device-width, height=device-height"
-      }
+      },
+      ...customMeta
     ];
 
     // PWA primary color

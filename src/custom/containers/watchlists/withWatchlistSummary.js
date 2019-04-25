@@ -9,28 +9,33 @@ import watchlistSummaryQuery from "./watchlistSummary.gql";
 const loadMore = ({ queryName, fetchMore, pageInfo }, callback) => {
   fetchMore({
     variables: {
-      itemsAfterCursor: (pageInfo && pageInfo.endCursor) || null
+      after: (pageInfo && pageInfo.endCursor) || null
     },
     updateQuery: (previousResult, { fetchMoreResult }) => {
-      // TODO: No guarantee this works! (copied from reaction)
-      const { [queryName]: items } = fetchMoreResult;
+      const { [queryName]: { summary } } = fetchMoreResult;
+      const {
+        [queryName]: { summary: previousSummary, ...previousResultData }
+      } = previousResult;
 
       if (callback) {
         callback();
       }
 
       // Return with additional results
-      if (items.edges.length) {
-        const edges = [
-          ...previousResult[queryName].edges,
-          ...fetchMoreResult[queryName].edges
+      if (summary.nodes.length) {
+        const nodes = [
+          ...previousSummary.nodes,
+          ...summary.nodes
         ];
         return {
           [queryName]: {
-            __typename: previousResult[queryName].__typename,
-            edges,
-            pageInfo: fetchMoreResult[queryName].pageInfo,
-            totalCount: fetchMoreResult[queryName].totalCount
+            ...previousResultData,
+            summary: {
+              __typename: previousSummary.__typename,
+              nodes,
+              pageInfo: summary.pageInfo,
+              totalCount: summary.totalCount
+            }
           }
         };
       }
@@ -53,16 +58,21 @@ export default function withWatchlistSummary(UnderlyingComponent) {
 
   class WatchlistSummary extends React.Component {
     static propTypes = {
+      resultsPageSize: PropTypes.int,
       watchlistName: PropTypes.string.isRequired
     };
 
+    static defaultProps = {
+      resultsPageSize: 5
+    };
+
     render() {
-      const { watchlistName } = this.props;
+      const { resultsPageSize, watchlistName } = this.props;
 
       return (
         <Query
           query={watchlistSummaryQuery}
-          variables={{ name: watchlistName }}
+          variables={{ name: watchlistName, first: resultsPageSize }}
         >
           {(apolloParams) => {
             const {
@@ -81,17 +91,16 @@ export default function withWatchlistSummary(UnderlyingComponent) {
             const { pageInfo } = watchlistResult.summary;
             if (pageInfo) {
               const { hasNextPage } = pageInfo;
-              props.hasMoreResults = hasNextPage;
-              props.loadMoreResults = (callback) => {
+              props.hasMoreSummaryResults = hasNextPage;
+              props.loadMoreSummaryResults = (callback) => {
                 loadMore({
-                  queryName: "watchlistSummary",
+                  queryName: "watchlist",
                   fetchMore,
                   pageInfo,
-                  limit: 10 // TODO: make this a prop
+                  limit: resultsPageSize
                 }, callback);
               };
             }
-            props.refetchResults = refetch; // mostly for debugging
             props.onMutationComplete = refetch;
 
             return <Component {...props} />;
