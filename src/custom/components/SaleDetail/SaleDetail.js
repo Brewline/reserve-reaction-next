@@ -339,7 +339,7 @@ class SaleDetail extends Component {
           <InlineAlert
             alertType="error"
             message={message}
-            title="This is a demo can release"
+            title="This can release is not active on Brewline... but it could be!"
           />
         </Grid>
       </Grid>

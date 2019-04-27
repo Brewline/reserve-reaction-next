@@ -266,12 +266,7 @@ export default class CanReleaseBuilder extends Component {
 
             InputProps={{
               startAdornment: (
-                <InputAdornment
-                  position="start"
-                  variant="filled"
-                >
-                  $
-                </InputAdornment>
+                <InputAdornment position="start">$</InputAdornment>
               )
             }}
 
